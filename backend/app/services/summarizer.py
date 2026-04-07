@@ -17,9 +17,9 @@ class SummarizerService:
                 "Content-Type": "application/json"
             }
             payload = {
-                "model": "tngtech/tng-r1t-chimera:free", 
+                "model": "minimax/minimax-m2.5:free", 
                 "messages": [
-                    {"role": "system", "content": "You are an expert content editor. functions. Summarize the following blog post implementation into a concise, engaging summary depending on the size of the content. Capture the main ideas and the hooking element."},
+                    {"role": "system", "content": "You are an expert content editor. Summarize the following blog post into a concise, engaging summary (max 3-4 sentences). Capture the main ideas and the hooking element. Return ONLY plain text. DO NOT use markdown formatting (like ** or #), DO NOT use HTML tags, and DO NOT use LaTeX symbols. Output as a single paragraph."},
                     {"role": "user", "content": text[:4000]}
                 ]
             }

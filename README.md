@@ -12,17 +12,18 @@
 *   **Code Block Support**: Automatically handles horizontal scrolling for wide code snippets.
 
 ### 🤖 AI Writing Assistant
-Powered by the `tngtech/tng-r1t-chimera:free` model (via OpenRouter), InsightPress helps you writer better:
-*   **Generate Outline**: Stuck on where to start? Generate a structured outline from just a title.
+Powered by the `minimax/minimax-m2.5:free` model (via OpenRouter), InsightPress helps you write better:
+*   **Generate Outline**: Stuck on where to start? Generate a structured HTML outline from just a title.
 *   **Polish Content**: Turn rough drafts into professional, engaging prose.
 *   **Get Suggestions**: Receive actionable tips to improve your writing style and tone.
-*   **Smart Summaries**: Automatically generates concise summaries for your blog posts.
+*   **Smart Summaries**: Automatically generates concise, robust plain-text summaries for your blog posts.
 *   **Sentiment Analysis**: Detects the mood of your content (e.g., Positive, Neutral, Creative).
 
-### 🎨 Modern & Responsive UI
-*   **Prussian Blue Theme**: A professional, consistent color scheme (`#012b59`) across the entire application.
-*   **Responsive Design**: Optimized for everything from large desktops to mobile devices.
-*   **Interactive Elements**: Smooth transitions and loading states using `framer-motion`.
+### 🎨 Premium & Responsive UI
+*   **Design System**: Custom Tailwind V4 aesthetic utilizing rich gradients, unified tokens, pulse-soft animations, and refined drop-shadows.
+*   **Typography Engine**: Utilizes `@tailwindcss/typography` to elegantly and natively render raw AI HTML outputs and Tiptap rich-text blocks.
+*   **Responsive Layout**: Handcrafted layout featuring horizontal feature cards, an expanded ambient footer, and fully responsive breakpoints.
+*   **Interactive Architecture**: Distinct AI loading indicators separated from application-level states, preventing form collision.
 
 ### 🔐 Simplified Ownership
 *   **Edit Keys**: No complex user accounts. Secure your posts with a simple "Edit Key" (passphrase) that is hashed and stored securely.

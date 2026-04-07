@@ -129,7 +129,7 @@ export default function BlogDetail() {
                 )}
 
                 <div
-                    className="prose prose-slate dark:prose-invert max-w-full"
+                    className="prose prose-slate max-w-full"
                     dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(blog.content) }}
                 />
             </article>

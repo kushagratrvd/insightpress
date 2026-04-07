@@ -14,9 +14,9 @@ class SentimentService:
                 "Content-Type": "application/json"
             }
             payload = {
-                "model": "tngtech/tng-r1t-chimera:free",
+                "model": "minimax/minimax-m2.5:free",
                 "messages": [
-                    {"role": "system", "content": "Analyze the sentiment of this text. Return ONLY one word from this list: Positive, Negative, Neutral, Inspiring, Informative."},
+                    {"role": "system", "content": "Analyze the sentiment of this text. Return EXACTLY AND ONLY one word from this list: Positive, Negative, Neutral, Inspiring, Informative. DO NOT output any punctuation, markdown (like **), or explanations."},
                     {"role": "user", "content": text[:2000]}
                 ]
             }

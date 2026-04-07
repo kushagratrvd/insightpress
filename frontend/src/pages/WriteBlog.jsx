@@ -18,6 +18,7 @@ export default function WriteBlog() {
         editKey: ''
     });
     const [loading, setLoading] = useState(false);
+    const [aiLoading, setAiLoading] = useState(false);
     const [initializing, setInitializing] = useState(isEditing);
     const [aiResult, setAiResult] = useState({ type: '', content: '' });
 
@@ -129,42 +130,37 @@ export default function WriteBlog() {
                             <div className="flex justify-between items-center">
                                 <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Content</label>
                                 <div className="flex gap-2">
-                                    <Button type="button" variant="outline" size="sm" onClick={async () => {
+                                    <Button type="button" variant="outline" size="sm" disabled={aiLoading} onClick={async () => {
                                         if (!formData.title) return alert("Please enter a title first!");
-                                        setLoading(true);
+                                        setAiLoading(true);
                                         try {
                                             const res = await api.post('/ai/generate_outline', { text: formData.title });
                                             setAiResult({ type: 'Outline', content: res.data.result });
                                         } catch (e) { alert("Failed to generate outline"); }
-                                        setLoading(false);
+                                        setAiLoading(false);
                                     }}>
-                                        <Sparkles className="h-3 w-3 mr-1" /> Outline
+                                        {aiLoading ? <Loader2 className="animate-spin h-3 w-3 mr-1" /> : <Sparkles className="h-3 w-3 mr-1" />} Outline
                                     </Button>
-                                    <Button type="button" variant="outline" size="sm" onClick={async () => {
+                                    <Button type="button" variant="outline" size="sm" disabled={aiLoading} onClick={async () => {
                                         if (!formData.content) return alert("Write some content first!");
-                                        setLoading(true);
+                                        setAiLoading(true);
                                         try {
-                                            // Sending HTML to backend is fine, or simple text. 
-                                            // For polishing, we ideally want the text. 
-                                            // Editor state is in formData.content (HTML).
-                                            // Let's send the HTML as 'text' and hope the AI handles it or we strip tags?
-                                            // AI models are good at HTML usually.
                                             const res = await api.post('/ai/polish_content', { text: formData.content });
                                             setAiResult({ type: 'Polished Content', content: res.data.result });
                                         } catch (e) { alert("Failed to polish content"); }
-                                        setLoading(false);
+                                        setAiLoading(false);
                                     }}>
-                                        <Sparkles className="h-3 w-3 mr-1" /> Polish
+                                        {aiLoading ? <Loader2 className="animate-spin h-3 w-3 mr-1" /> : <Sparkles className="h-3 w-3 mr-1" />} Polish
                                     </Button>
-                                    <Button type="button" variant="outline" size="sm" onClick={async () => {
-                                        setLoading(true);
+                                    <Button type="button" variant="outline" size="sm" disabled={aiLoading} onClick={async () => {
+                                        setAiLoading(true);
                                         try {
                                             const res = await api.post('/ai/generate_suggestions', { text: formData.content });
                                             setAiResult({ type: 'Suggestions', content: res.data.result });
                                         } catch (e) { alert("Failed to get suggestions"); }
-                                        setLoading(false);
+                                        setAiLoading(false);
                                     }}>
-                                        <Sparkles className="h-3 w-3 mr-1" /> Tips
+                                        {aiLoading ? <Loader2 className="animate-spin h-3 w-3 mr-1" /> : <Sparkles className="h-3 w-3 mr-1" />} Tips
                                     </Button>
                                 </div>
                             </div>
@@ -192,7 +188,12 @@ export default function WriteBlog() {
                             <h2 className="font-semibold text-lg">AI Assistant</h2>
                         </div>
 
-                        {!aiResult.content ? (
+                        {aiLoading ? (
+                            <div className="flex flex-col items-center justify-center py-20 text-muted-foreground animate-in fade-in duration-300">
+                                <Loader2 className="animate-spin h-10 w-10 text-accent mb-4" />
+                                <p className="text-sm font-medium animate-pulse text-accent">AI is generating...</p>
+                            </div>
+                        ) : !aiResult.content ? (
                             <div className="text-muted-foreground text-sm text-center py-10">
                                 <p>Select a tool above to get help from AI.</p>
                                 <p className="mt-2 text-xs">Generate outlines, polish your drafts, or get writing tips.</p>
@@ -203,9 +204,10 @@ export default function WriteBlog() {
                                     <h3 className="font-medium text-primary">{aiResult.type}</h3>
                                     <Button variant="ghost" size="sm" onClick={() => setAiResult({ type: '', content: '' })}>Clear</Button>
                                 </div>
-                                <div className="bg-muted/50 p-4 rounded-md text-sm whitespace-pre-wrap max-h-[500px] overflow-y-auto">
-                                    {aiResult.content}
-                                </div>
+                                <div 
+                                    className="bg-muted/50 p-5 rounded-md text-sm max-h-[500px] overflow-y-auto [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-2 [&_p]:mb-3 [&_h1]:text-xl [&_h1]:font-bold [&_h1]:mb-2 [&_h2]:text-lg [&_h2]:font-bold [&_h2]:mb-2 [&_strong]:text-primary"
+                                    dangerouslySetInnerHTML={{ __html: aiResult.content }}
+                                />
                                 <div className="flex gap-2">
                                     <Button size="sm" variant="secondary" className="w-full border" onClick={() => {
                                         navigator.clipboard.writeText(aiResult.content);
